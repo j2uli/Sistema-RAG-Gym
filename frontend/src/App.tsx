@@ -1,11 +1,17 @@
-function App() {
+import AppRouter from "./routes/AppRouter";
+
+
+function App(){
+
 
     return (
-        <h1>
-            Sistema RAG Gym
-        </h1>
+
+        <AppRouter />
+
     );
 
+
 }
+
 
 export default App;
