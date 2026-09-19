@@ -50,6 +50,54 @@ router.get("/", verificarToken, async(req,res)=>{
 });
 
 
+// Obtener objetivo por usuario
+router.get("/usuario/:usuarioId", verificarToken, async(req,res)=>{
+
+    try{
+
+
+        const objetivo = await ObjetivoEntrenamiento.findOne({
+
+            usuario: req.params.usuarioId
+
+        })
+        .populate("usuario");
+
+
+
+        if(!objetivo){
+
+            return res.status(404).json({
+
+                mensaje:"Objetivo no encontrado"
+
+            });
+
+        }
+
+
+
+        res.json(objetivo);
+
+
+
+    }catch(error){
+
+
+        res.status(500).json({
+
+            mensaje:"Error al buscar objetivo del usuario",
+
+            error:error.message
+
+        });
+
+
+    }
+
+
+});
+
 // Obtener por ID
 router.get("/:id", verificarToken, async(req,res)=>{
     try{

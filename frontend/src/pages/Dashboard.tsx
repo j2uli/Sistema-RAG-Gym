@@ -4,8 +4,10 @@ import {
 
 
 import UserCard from "../components/UserCard";
-
-
+import PerfilFisicoCard from "../components/PerfilFisicoCard";
+import ObjetivoCard from "../components/ObjetivoCard";
+import RutinaCard from "../components/RutinaCard";
+import DetalleRutinaCard from "../components/DetalleRutinaCard";
 
 function Dashboard(){
 
@@ -28,8 +30,10 @@ function Dashboard(){
 
 
             <UserCard />
-
-
+            <PerfilFisicoCard />
+            <ObjetivoCard />
+            <RutinaCard />
+            <DetalleRutinaCard />
 
             <button
                 onClick={cerrarSesion}

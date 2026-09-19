@@ -78,6 +78,45 @@ router.get("/:id", verificarToken, async(req,res)=>{
 
 });
 
+// Obtener sesiones por usuario
+router.get("/usuario/:usuarioId", verificarToken, async(req,res)=>{
+
+    try{
+
+
+        const sesiones =
+            await SesionEntrenamiento.find({
+
+                usuario:req.params.usuarioId
+
+            })
+            .sort({
+                fecha:-1
+            })
+            .populate("usuario")
+            .populate("rutina");
+
+
+
+        res.json(sesiones);
+
+
+
+    }catch(error){
+
+
+        res.status(500).json({
+
+            mensaje:"Error al obtener sesiones del usuario",
+
+            error:error.message
+
+        });
+
+    }
+
+});
+
 
 // Actualizar
 router.put("/:id", verificarToken, async(req,res)=>{

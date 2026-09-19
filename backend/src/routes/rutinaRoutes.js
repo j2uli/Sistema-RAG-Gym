@@ -4,6 +4,7 @@ const router = express.Router();
 const Rutina = require("../models/Rutina");
 const verificarToken = require("../middleware/authMiddleware");
 
+
 // Crear rutina
 router.post("/", verificarToken, async(req,res)=>{
     try{
@@ -25,8 +26,8 @@ router.post("/", verificarToken, async(req,res)=>{
         });
 
     }
-
 });
+
 
 
 // Obtener todas
@@ -46,8 +47,60 @@ router.get("/", verificarToken, async(req,res)=>{
         });
 
     }
+});
+
+
+
+// Obtener rutina activa por usuario
+router.get("/usuario/:usuarioId", verificarToken, async(req,res)=>{
+
+    try{
+
+        console.log(
+            "BUSCANDO RUTINA:",
+            req.params.usuarioId
+        );
+
+
+        const rutina = await Rutina.findOne({
+            usuario:req.params.usuarioId,
+            estado:"Activa"
+        })
+        .sort({
+            fecha_creacion:-1
+        })
+        .populate("usuario");
+
+
+        console.log(
+            "RUTINA DEVUELTA:",
+            rutina
+        );
+
+
+        if(!rutina){
+
+            return res.status(404).json({
+                mensaje:"Rutina no encontrada"
+            });
+
+        }
+
+
+        res.json(rutina);
+
+
+    }catch(error){
+
+        res.status(500).json({
+            mensaje:"Error al buscar rutina del usuario",
+            error:error.message
+        });
+
+    }
 
 });
+
 
 
 // Obtener por ID
@@ -57,13 +110,18 @@ router.get("/:id", verificarToken, async(req,res)=>{
         const rutina = await Rutina.findById(req.params.id)
             .populate("usuario");
 
+
         if(!rutina){
+
             return res.status(404).json({
                 mensaje:"Rutina no encontrada"
             });
+
         }
 
+
         res.json(rutina);
+
 
     }catch(error){
 
@@ -73,24 +131,30 @@ router.get("/:id", verificarToken, async(req,res)=>{
         });
 
     }
-
 });
+
 
 
 // Actualizar
 router.put("/:id", verificarToken, async(req,res)=>{
+
     try{
 
-        const actualizada = await Rutina.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {new:true}
-        );
+        const actualizada =
+            await Rutina.findByIdAndUpdate(
+                req.params.id,
+                req.body,
+                {
+                    new:true
+                }
+            );
+
 
         res.json({
             mensaje:"Rutina actualizada correctamente",
             rutina:actualizada
         });
+
 
     }catch(error){
 
@@ -104,15 +168,19 @@ router.put("/:id", verificarToken, async(req,res)=>{
 });
 
 
+
 // Eliminar
 router.delete("/:id", verificarToken, async(req,res)=>{
+
     try{
 
         await Rutina.findByIdAndDelete(req.params.id);
 
+
         res.json({
             mensaje:"Rutina eliminada correctamente"
         });
+
 
     }catch(error){
 

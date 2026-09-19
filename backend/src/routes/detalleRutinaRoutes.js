@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const DetalleRutina = require("../models/DetalleRutina");
+const verificarToken = require("../middleware/authMiddleware");
 
 
 // Crear detalle
-router.post("/", async(req,res)=>{
-
+router.post("/", verificarToken, async(req,res)=>{
     try{
 
         const detalle = new DetalleRutina(req.body);
@@ -29,10 +29,37 @@ router.post("/", async(req,res)=>{
 
 });
 
+router.get("/rutina/:rutinaId", verificarToken, async(req,res)=>{
+
+    try{
+
+        const detalles = await DetalleRutina.find({
+
+            rutina:req.params.rutinaId
+
+        })
+        .populate("ejercicio")
+        .populate("rutina");
+
+
+        res.json(detalles);
+
+
+    }catch(error){
+
+        res.status(500).json({
+
+            mensaje:"Error al obtener ejercicios de rutina",
+            error:error.message
+
+        });
+
+    }
+
+});
 
 // Obtener todos
-router.get("/", async(req,res)=>{
-
+router.get("/", verificarToken, async(req,res)=>{
     try{
 
         const detalles = await DetalleRutina.find()
@@ -54,8 +81,7 @@ router.get("/", async(req,res)=>{
 
 
 // Obtener por ID
-router.get("/:id", async(req,res)=>{
-
+router.get("/:id", verificarToken, async(req,res)=>{
     try{
 
         const detalle = await DetalleRutina.findById(req.params.id)
@@ -83,8 +109,7 @@ router.get("/:id", async(req,res)=>{
 
 
 // Actualizar
-router.put("/:id", async(req,res)=>{
-
+router.put("/:id", verificarToken, async(req,res)=>{
     try{
 
         const actualizado = await DetalleRutina.findByIdAndUpdate(
@@ -111,8 +136,7 @@ router.put("/:id", async(req,res)=>{
 
 
 // Eliminar
-router.delete("/:id", async(req,res)=>{
-
+router.delete("/:id", verificarToken, async(req,res)=>{
     try{
 
         await DetalleRutina.findByIdAndDelete(req.params.id);

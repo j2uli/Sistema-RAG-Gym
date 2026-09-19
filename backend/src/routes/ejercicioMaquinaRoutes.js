@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const EjercicioMaquina = require("../models/EjercicioMaquina");
+const verificarToken = require("../middleware/authMiddleware");
 
 
 // Crear relación
-router.post("/", async(req,res)=>{
+router.post("/", verificarToken, async(req,res)=>{
 
     try{
 
@@ -30,8 +31,9 @@ router.post("/", async(req,res)=>{
 });
 
 
+
 // Obtener todas las relaciones
-router.get("/", async(req,res)=>{
+router.get("/", verificarToken, async(req,res)=>{
 
     try{
 
@@ -53,8 +55,9 @@ router.get("/", async(req,res)=>{
 });
 
 
+
 // Obtener por ID
-router.get("/:id", async(req,res)=>{
+router.get("/:id", verificarToken, async(req,res)=>{
 
     try{
 
@@ -62,13 +65,18 @@ router.get("/:id", async(req,res)=>{
             .populate("ejercicio")
             .populate("maquina");
 
+
         if(!relacion){
+
             return res.status(404).json({
                 mensaje:"Relación no encontrada"
             });
+
         }
 
+
         res.json(relacion);
+
 
     }catch(error){
 
@@ -82,21 +90,30 @@ router.get("/:id", async(req,res)=>{
 });
 
 
+
 // Actualizar
-router.put("/:id", async(req,res)=>{
+router.put("/:id", verificarToken, async(req,res)=>{
 
     try{
 
-        const actualizada = await EjercicioMaquina.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {new:true}
-        );
+        const actualizada =
+            await EjercicioMaquina.findByIdAndUpdate(
+                req.params.id,
+                req.body,
+                {
+                    new:true
+                }
+            );
+
 
         res.json({
+
             mensaje:"Relación actualizada correctamente",
+
             relacion:actualizada
+
         });
+
 
     }catch(error){
 
@@ -110,22 +127,30 @@ router.put("/:id", async(req,res)=>{
 });
 
 
+
 // Eliminar
-router.delete("/:id", async(req,res)=>{
+router.delete("/:id", verificarToken, async(req,res)=>{
 
     try{
 
         await EjercicioMaquina.findByIdAndDelete(req.params.id);
 
+
         res.json({
+
             mensaje:"Relación eliminada correctamente"
+
         });
+
 
     }catch(error){
 
         res.status(500).json({
+
             mensaje:"Error al eliminar relación",
+
             error:error.message
+
         });
 
     }

@@ -52,6 +52,54 @@ router.get("/", verificarToken, async(req,res)=>{
 
 module.exports = router;
 
+// Obtener perfil físico por usuario
+router.get("/usuario/:usuarioId", verificarToken, async(req,res)=>{
+
+    try{
+
+
+        const perfil = await PerfilFisico.findOne({
+
+            usuario: req.params.usuarioId
+
+        })
+        .populate("usuario");
+
+
+
+        if(!perfil){
+
+            return res.status(404).json({
+
+                mensaje:"Perfil físico no encontrado"
+
+            });
+
+        }
+
+
+
+        res.json(perfil);
+
+
+
+    }catch(error){
+
+
+        res.status(500).json({
+
+            mensaje:"Error al buscar perfil físico del usuario",
+
+            error:error.message
+
+        });
+
+
+    }
+
+
+});
+
 router.get("/:id", async (req, res) => {
 
     try {
