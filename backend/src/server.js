@@ -14,6 +14,7 @@ const detalleRutinaRoutes = require("./routes/detalleRutinaRoutes");
 const sesionEntrenamientoRoutes = require("./routes/sesionEntrenamientoRoutes");
 const historialProgresoRoutes = require("./routes/historialProgresoRoutes");
 const authRoutes = require("./routes/authRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 connectDB();
 
@@ -33,6 +34,7 @@ app.use("/api/detalle-rutina", detalleRutinaRoutes);
 app.use("/api/sesiones", sesionEntrenamientoRoutes);
 app.use("/api/historial-progreso", historialProgresoRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 const PORT = process.env.PORT || 5000;
 

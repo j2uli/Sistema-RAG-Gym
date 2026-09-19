@@ -1,11 +1,11 @@
 import api from "./api";
 
 
-export const obtenerObjetivos = async()=>{
+export const obtenerResumen = async()=>{
 
 
     const respuesta = await api.get(
-        "/objetivos"
+        "/dashboard/resumen"
     );
 
 

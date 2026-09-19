@@ -1,11 +1,11 @@
 import api from "./api";
 
 
-export const obtenerObjetivos = async()=>{
+export const obtenerHistorial = async()=>{
 
 
     const respuesta = await api.get(
-        "/objetivos"
+        "/historial-progreso"
     );
 
 

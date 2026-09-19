@@ -1,0 +1,32 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body{
+
+    font-family:
+    Arial, Helvetica, sans-serif;
+
+    background:#050505;
+
+    color:white;
+
+}
+
+
+/* colores mitico */
+
+:root{
+
+    --verde:#39ff14;
+
+    --verde-dark:#0b7a0b;
+
+    --negro:#050505;
+
+    --card:#111111;
+
+}

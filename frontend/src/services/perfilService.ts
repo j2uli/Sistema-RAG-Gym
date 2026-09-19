@@ -1,13 +1,11 @@
 import api from "./api";
 
 
-export const obtenerPerfilFisico = async (
-    usuarioId: string
-) => {
+export const obtenerPerfiles = async()=>{
 
 
     const respuesta = await api.get(
-        `/perfil-fisico/usuario/${usuarioId}`
+        "/perfil-fisico"
     );
 
 

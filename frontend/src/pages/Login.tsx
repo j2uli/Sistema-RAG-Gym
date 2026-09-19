@@ -2,6 +2,7 @@ import {
     useState
 } from "react";
 
+
 import {
     useNavigate
 } from "react-router-dom";
@@ -17,6 +18,9 @@ import {
 } from "../context/AuthContext";
 
 
+import logo from "../assets/logo.png";
+
+
 
 function Login(){
 
@@ -30,27 +34,28 @@ function Login(){
 
 
 
-    const [correo,setCorreo] = useState("");
+    const [correo,setCorreo]=useState("");
 
-    const [password,setPassword] = useState("");
+    const [password,setPassword]=useState("");
 
-
-    const [error,setError] = useState("");
-
+    const [error,setError]=useState("");
 
 
-    const handleLogin = async (
-        e: React.FormEvent
-    ) => {
+
+
+    const handleLogin = async(
+        e:React.FormEvent
+    )=>{
 
 
         e.preventDefault();
 
 
-        try {
+        try{
 
 
-            const respuesta = await login({
+            const respuesta =
+            await login({
 
                 correo,
 
@@ -73,13 +78,12 @@ function Login(){
 
 
 
-        } catch(error){
+        }catch(error){
 
 
             setError(
                 "Correo o contraseña incorrectos"
             );
-
 
         }
 
@@ -88,38 +92,157 @@ function Login(){
 
 
 
-    return (
-
-        <div>
 
 
-            <h1>
-                Sistema RAG Gym
-            </h1>
+    return(
 
 
-            <form
-                onSubmit={handleLogin}
+        <div
+        style={{
+
+            minHeight:"100vh",
+
+            display:"flex",
+
+            justifyContent:"center",
+
+            alignItems:"center",
+
+            background:"#050505"
+
+        }}
+        >
+
+
+
+            <div
+
+            style={{
+
+                width:"380px",
+
+                background:"#111",
+
+                padding:"40px",
+
+                borderRadius:"20px",
+
+                boxShadow:
+                "0 0 25px #39ff14",
+
+                textAlign:"center"
+
+            }}
+
             >
 
 
-                <input
 
-                    type="email"
+                <img
 
-                    placeholder="Correo"
+                src={logo}
 
-                    value={correo}
+                alt="Mitico Fitness"
 
-                    onChange={
-                        e => setCorreo(e.target.value)
-                    }
+                style={{
+
+                    width:"180px",
+
+                    marginBottom:"20px"
+
+                }}
 
                 />
 
 
 
-                <input
+
+                <h1
+
+                style={{
+
+                    color:"#39ff14",
+
+                    marginBottom:"10px"
+
+                }}
+
+                >
+
+                    Bienvenido
+
+                </h1>
+
+
+
+
+                <p
+
+                style={{
+
+                    color:"#aaa",
+
+                    marginBottom:"30px"
+
+                }}
+
+                >
+
+                    Ingresa a tu entrenamiento
+
+                </p>
+
+
+
+
+
+                <form
+                onSubmit={handleLogin}
+                >
+
+
+
+                    <input
+
+                    type="email"
+
+                    placeholder="Correo electrónico"
+
+                    value={correo}
+
+                    onChange={
+                        e=>setCorreo(
+                            e.target.value
+                        )
+                    }
+
+
+                    style={{
+
+                        width:"100%",
+
+                        padding:"14px",
+
+                        marginBottom:"15px",
+
+                        background:"#050505",
+
+                        border:
+                        "1px solid #333",
+
+                        color:"white",
+
+                        borderRadius:"10px"
+
+                    }}
+
+                    />
+
+
+
+
+
+                    <input
 
                     type="password"
 
@@ -128,40 +251,137 @@ function Login(){
                     value={password}
 
                     onChange={
-                        e => setPassword(e.target.value)
+                        e=>setPassword(
+                            e.target.value
+                        )
                     }
 
-                />
+
+                    style={{
+
+                        width:"100%",
+
+                        padding:"14px",
+
+                        marginBottom:"20px",
+
+                        background:"#050505",
+
+                        border:
+                        "1px solid #333",
+
+                        color:"white",
+
+                        borderRadius:"10px"
+
+                    }}
+
+                    />
 
 
 
-                <button
+
+
+
+                    <button
+
                     type="submit"
-                >
 
-                    Iniciar sesión
 
-                </button>
+                    style={{
+
+                        width:"100%",
+
+                        padding:"14px",
+
+                        background:"#39ff14",
+
+                        color:"black",
+
+                        fontWeight:"bold",
+
+                        border:"none",
+
+                        borderRadius:"10px",
+
+                        cursor:"pointer"
+
+                    }}
+
+                    >
+
+                        INICIAR SESIÓN
+
+                    </button>
+
+
+
+
+                </form>
+
+
 
 
 
                 {
+
                     error &&
-                    <p>
+
+                    <p
+
+                    style={{
+
+                        color:"red",
+
+                        marginTop:"20px"
+
+                    }}
+
+                    >
+
                         {error}
+
                     </p>
+
                 }
 
 
-            </form>
+
+
+
+                <p
+
+                style={{
+
+                    marginTop:"30px",
+
+                    color:"#777",
+
+                    fontSize:"13px"
+
+                }}
+
+                >
+
+                    Mítico Fitness
+                    <br/>
+                    Entrena. Supérate. Evoluciona.
+
+                </p>
+
+
+
+            </div>
+
 
 
         </div>
 
+
     );
 
-
 }
+
 
 
 export default Login;

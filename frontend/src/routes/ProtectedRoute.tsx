@@ -1,5 +1,6 @@
 import {
-    Navigate
+    Navigate,
+    Outlet
 } from "react-router-dom";
 
 
@@ -9,9 +10,7 @@ import {
 
 
 
-function ProtectedRoute({
-    children
-}: any){
+function ProtectedRoute(){
 
 
     const {
@@ -26,6 +25,7 @@ function ProtectedRoute({
 
             <Navigate
                 to="/login"
+                replace
             />
 
         );
@@ -34,7 +34,7 @@ function ProtectedRoute({
 
 
 
-    return children;
+    return <Outlet />;
 
 
 }

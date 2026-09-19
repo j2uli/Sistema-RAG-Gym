@@ -1,7 +1,7 @@
 import api from "./api";
 
 
-export const obtenerRutina = async (
+export const obtenerRutina = async(
     usuarioId:string
 )=>{
 
@@ -11,9 +11,6 @@ export const obtenerRutina = async (
         `/rutinas/usuario/${usuarioId}`
 
     );
-
-
-    console.log("RESPUESTA BACKEND RUTINA:", respuesta.data);
 
 
     return respuesta.data;

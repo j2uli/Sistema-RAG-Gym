@@ -1,11 +1,13 @@
 import api from "./api";
 
 
-export const obtenerObjetivos = async()=>{
+export const obtenerUsuario = async(
+    id:string
+)=>{
 
 
     const respuesta = await api.get(
-        "/objetivos"
+        `/usuarios/${id}`
     );
 
 
