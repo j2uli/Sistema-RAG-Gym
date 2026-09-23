@@ -254,13 +254,13 @@ function UsuarioDetalle(){
 
 
                     const perfilUsuario =
-                    perfiles.find(
+perfiles.find(
 
-                        (p:any)=>
+(p:any)=>
 
-                        p.usuario._id === id
+p.usuario?._id?.toString() === id?.toString()
 
-                    );
+);
 
 
                     setPerfil(
@@ -279,15 +279,14 @@ function UsuarioDetalle(){
 
 
 
-                    const objetivoUsuario =
-                    objetivos.find(
+                   const objetivoUsuario =
+objetivos.find(
 
-                        (o:any)=>
+(o:any)=>
 
-                        o.usuario._id === id
+o.usuario?._id?.toString() === id?.toString()
 
-                    );
-
+);
 
 
                     setObjetivo(
@@ -351,14 +350,14 @@ function UsuarioDetalle(){
 
                     const progresoUsuario =
 
-                    historiales.filter(
+historiales.filter(
 
-                        (h:any)=>
+(h:any)=>
 
-                        h.usuario._id === id
+h.usuario?._id?.toString() === id?.toString()
 
-                    )
-                    .pop();
+)
+.pop();
 
 
 

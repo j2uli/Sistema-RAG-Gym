@@ -28,25 +28,183 @@ router.post("/", async (req, res) => {
 
 });
 
+// Actualizar membresía del usuario
+
+router.put("/:id/membresia", async(req,res)=>{
+
+
+    try{
+
+
+        const usuario = await Usuario.findByIdAndUpdate(
+
+            req.params.id,
+
+            {
+                membresia:req.body
+            },
+
+            {
+                new:true
+            }
+
+        )
+        .select("-password");
+
+
+
+        if(!usuario){
+
+
+            return res.status(404).json({
+
+                mensaje:"Usuario no encontrado"
+
+            });
+
+
+        }
+
+
+
+        res.json({
+
+            mensaje:"Membresía actualizada correctamente",
+
+            usuario
+
+        });
+
+
+
+    }catch(error){
+
+
+        res.status(500).json({
+
+            mensaje:"Error al actualizar membresía",
+
+            error:error.message
+
+        });
+
+
+    }
+
+
+});
+
 
 module.exports = router;
 
-router.get("/", async (req, res) => {
+router.get("/", async(req,res)=>{
 
-    try {
 
-        const usuarios = await Usuario.find();
+    try{
+
+
+        const {
+            buscar,
+            rol,
+            estado
+        } = req.query;
+
+
+
+        let filtro = {};
+
+
+
+
+        if(buscar){
+
+
+            filtro.$or=[
+
+
+                {
+                    nombre:{
+                        $regex:buscar,
+                        $options:"i"
+                    }
+                },
+
+
+                {
+                    apellido:{
+                        $regex:buscar,
+                        $options:"i"
+                    }
+                },
+
+
+                {
+                    correo:{
+                        $regex:buscar,
+                        $options:"i"
+                    }
+                }
+
+
+            ];
+
+
+        }
+
+
+
+
+        if(rol){
+
+
+            filtro.rol = rol;
+
+
+        }
+
+
+
+
+        if(estado){
+
+
+            filtro["membresia.estado"] = estado;
+
+
+        }
+
+
+
+
+
+
+        const usuarios = await Usuario.find(filtro)
+
+        .select("-password");
+
+
+
 
         res.json(usuarios);
 
-    } catch (error) {
+
+
+
+
+    }catch(error){
+
 
         res.status(500).json({
-            mensaje: "Error al obtener usuarios",
-            error: error.message
+
+            mensaje:"Error al obtener usuarios",
+
+            error:error.message
+
         });
 
+
     }
+
 
 });
 
