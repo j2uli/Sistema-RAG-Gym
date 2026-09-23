@@ -34,6 +34,11 @@ import {
 } from "../services/historialProgresoService";
 
 
+import {
+    obtenerDetalleRutina
+} from "../services/detalleRutinaService";
+
+
 
 
 interface Usuario{
@@ -85,6 +90,8 @@ interface Objetivo{
 interface Rutina{
 
 
+    _id:string;
+
     nombre:string;
 
     objetivo:string;
@@ -115,6 +122,40 @@ interface Progreso{
 
 
 
+interface Ejercicio{
+
+
+    nombre:string;
+
+    grupo_muscular:string;
+
+
+}
+
+
+
+
+interface DetalleRutina{
+
+
+    dia:string;
+
+    series:number;
+
+    repeticiones:number;
+
+    peso:number;
+
+    descanso:number;
+
+    ejercicio:Ejercicio;
+
+
+}
+
+
+
+
 
 
 
@@ -125,6 +166,7 @@ function UsuarioDetalle(){
     const {
         id
     } = useParams();
+
 
 
 
@@ -170,6 +212,13 @@ function UsuarioDetalle(){
 
 
 
+    const [
+        detallesRutina,
+        setDetallesRutina
+    ] = useState<DetalleRutina[]>([]);
+
+
+
 
 
 
@@ -187,22 +236,17 @@ function UsuarioDetalle(){
 
 
 
-                    // Usuario
-
                     const datosUsuario =
                     await obtenerUsuario(id);
 
 
-                    setUsuario(
-                        datosUsuario
-                    );
+                    setUsuario(datosUsuario);
 
 
 
 
 
 
-                    // Perfil físico
 
                     const perfiles =
                     await obtenerPerfiles();
@@ -219,7 +263,6 @@ function UsuarioDetalle(){
                     );
 
 
-
                     setPerfil(
                         perfilUsuario
                     );
@@ -229,10 +272,6 @@ function UsuarioDetalle(){
 
 
 
-
-
-
-                    // Objetivo
 
 
                     const objetivos =
@@ -263,9 +302,6 @@ function UsuarioDetalle(){
 
 
 
-                    // Rutina
-
-
                     const rutinaUsuario =
                     await obtenerRutina(id);
 
@@ -279,16 +315,37 @@ function UsuarioDetalle(){
 
 
 
+                    if(rutinaUsuario){
+
+
+                        const detalles =
+
+                        await obtenerDetalleRutina(
+
+                            rutinaUsuario._id
+
+                        );
+
+
+                        setDetallesRutina(
+
+                            detalles
+
+                        );
+
+
+                    }
 
 
 
 
-                    // Progreso
+
+
+
 
 
                     const historiales =
                     await obtenerHistorial();
-
 
 
 
@@ -307,7 +364,9 @@ function UsuarioDetalle(){
 
 
                     setProgreso(
+
                         progresoUsuario
+
                     );
 
 
@@ -371,7 +430,6 @@ function UsuarioDetalle(){
 
 
 
-
     const cardStyle = {
 
 
@@ -387,7 +445,6 @@ function UsuarioDetalle(){
 
 
     };
-
 
 
 
@@ -419,7 +476,6 @@ function UsuarioDetalle(){
                 👤 Perfil del usuario
 
             </h1>
-
 
 
 
@@ -472,17 +528,13 @@ function UsuarioDetalle(){
 
 
             {
-
             perfil &&
-
-
 
             <div
 
             style={cardStyle}
 
             >
-
 
                 <h2>
 
@@ -491,65 +543,46 @@ function UsuarioDetalle(){
                 </h2>
 
 
-
                 <p>
-
                 Peso:
                 {" "}
                 {perfil.peso} kg
-
                 </p>
 
 
-
                 <p>
-
                 Altura:
                 {" "}
                 {perfil.altura} m
-
                 </p>
 
 
-
                 <p>
-
                 IMC:
                 {" "}
                 {perfil.imc}
-
                 </p>
 
 
-
                 <p>
-
                 Nivel:
                 {" "}
                 {perfil.nivel_experiencia}
-
                 </p>
 
 
-
                 <p>
-
                 Lesiones:
                 {" "}
                 {perfil.lesiones}
-
                 </p>
-
 
 
                 <p>
-
                 Disponibilidad:
                 {" "}
                 {perfil.disponibilidad}
-
                 </p>
-
 
 
             </div>
@@ -565,10 +598,7 @@ function UsuarioDetalle(){
 
 
             {
-
             objetivo &&
-
-
 
             <div
 
@@ -576,13 +606,11 @@ function UsuarioDetalle(){
 
             >
 
-
                 <h2>
 
                     🎯 Objetivo
 
                 </h2>
-
 
 
                 <p>
@@ -594,7 +622,6 @@ function UsuarioDetalle(){
                 </p>
 
 
-
                 <p>
 
                 {objetivo.descripcion}
@@ -602,9 +629,7 @@ function UsuarioDetalle(){
                 </p>
 
 
-
             </div>
-
 
             }
 
@@ -617,10 +642,7 @@ function UsuarioDetalle(){
 
 
             {
-
             rutina &&
-
-
 
             <div
 
@@ -636,7 +658,6 @@ function UsuarioDetalle(){
                 </h2>
 
 
-
                 <p>
 
                 Nombre:
@@ -644,7 +665,6 @@ function UsuarioDetalle(){
                 {rutina.nombre}
 
                 </p>
-
 
 
                 <p>
@@ -656,7 +676,6 @@ function UsuarioDetalle(){
                 </p>
 
 
-
                 <p>
 
                 Frecuencia:
@@ -664,7 +683,6 @@ function UsuarioDetalle(){
                 {rutina.frecuencia}
 
                 </p>
-
 
 
                 <p>
@@ -677,8 +695,139 @@ function UsuarioDetalle(){
 
 
 
-            </div>
 
+
+                <h3
+
+                style={{
+
+                    color:"#39ff14",
+
+                    marginTop:"25px"
+
+                }}
+
+                >
+
+                    🏋 Ejercicios asignados
+
+                </h3>
+
+
+
+
+
+
+                {
+                detallesRutina.map(
+
+                    (detalle,index)=>(
+
+
+                    <div
+
+                    key={index}
+
+                    style={{
+
+                        background:"#050505",
+
+                        border:"1px solid #333",
+
+                        padding:"15px",
+
+                        borderRadius:"10px",
+
+                        marginTop:"15px"
+
+                    }}
+
+                    >
+
+
+
+                        <h3>
+
+                        🏋 {detalle.ejercicio.nombre}
+
+                        </h3>
+
+
+
+                        <p>
+
+                        Grupo muscular:
+                        {" "}
+                        {detalle.ejercicio.grupo_muscular}
+
+                        </p>
+
+
+
+                        <p>
+
+                        Día:
+                        {" "}
+                        {detalle.dia}
+
+                        </p>
+
+
+
+                        <p>
+
+                        Series:
+                        {" "}
+                        {detalle.series}
+
+                        </p>
+
+
+
+                        <p>
+
+                        Repeticiones:
+                        {" "}
+                        {detalle.repeticiones}
+
+                        </p>
+
+
+
+                        <p>
+
+                        Peso:
+                        {" "}
+                        {detalle.peso} kg
+
+                        </p>
+
+
+
+                        <p>
+
+                        Descanso:
+                        {" "}
+                        {detalle.descanso} segundos
+
+                        </p>
+
+
+
+                    </div>
+
+
+                    )
+
+                )
+
+                }
+
+
+
+
+
+            </div>
 
             }
 
@@ -691,10 +840,7 @@ function UsuarioDetalle(){
 
 
             {
-
             progreso &&
-
-
 
             <div
 
@@ -702,13 +848,11 @@ function UsuarioDetalle(){
 
             >
 
-
                 <h2>
 
                     📈 Último progreso
 
                 </h2>
-
 
 
                 <p>
@@ -720,7 +864,6 @@ function UsuarioDetalle(){
                 </p>
 
 
-
                 <p>
 
                 Grasa corporal:
@@ -728,7 +871,6 @@ function UsuarioDetalle(){
                 {progreso.grasa_corporal} %
 
                 </p>
-
 
 
                 <p>
@@ -739,8 +881,6 @@ function UsuarioDetalle(){
 
                 </p>
 
-
-
                 <p>
 
                 Observaciones:
@@ -750,14 +890,9 @@ function UsuarioDetalle(){
                 </p>
 
 
-
             </div>
 
-
             }
-
-
-
 
 
 

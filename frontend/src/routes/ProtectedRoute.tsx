@@ -10,7 +10,10 @@ import {
 
 
 
+
+
 function ProtectedRoute(){
+
 
 
     const {
@@ -19,25 +22,34 @@ function ProtectedRoute(){
 
 
 
+
+
     if(!token){
+
 
         return (
 
             <Navigate
+
                 to="/login"
-                replace
+
             />
 
         );
 
+
     }
+
+
 
 
 
     return <Outlet />;
 
 
+
 }
+
 
 
 export default ProtectedRoute;

@@ -1,7 +1,7 @@
 import api from "./api";
 
 
-export const obtenerDetalleRutina = async (
+export const obtenerDetalleRutina = async(
     rutinaId:string
 )=>{
 

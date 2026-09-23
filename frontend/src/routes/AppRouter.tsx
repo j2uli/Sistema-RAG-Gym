@@ -12,10 +12,15 @@ import Rutina from "../pages/Rutina";
 import Progreso from "../pages/Progreso";
 import Usuarios from "../pages/Usuarios";
 import UsuarioDetalle from "../pages/UsuarioDetalle";
+import Maquinas from "../pages/Maquinas";
+
 
 import ProtectedRoute from "./ProtectedRoute";
 
+
 import DashboardLayout from "../layouts/DashboardLayout";
+
+
 
 
 
@@ -24,13 +29,18 @@ function AppRouter(){
 
     return (
 
+
         <BrowserRouter>
 
 
             <Routes>
 
 
+
+
+
                 {/* LOGIN */}
+
 
                 <Route
 
@@ -43,7 +53,14 @@ function AppRouter(){
 
 
 
+
+
+
+
+
                 {/* ZONA PROTEGIDA */}
+
+
 
                 <Route
 
@@ -53,11 +70,16 @@ function AppRouter(){
 
 
 
+
                     <Route
 
                         element={<DashboardLayout />}
 
                     >
+
+
+
+
 
 
 
@@ -71,6 +93,11 @@ function AppRouter(){
 
 
 
+
+
+
+
+
                         <Route
 
                             path="/perfil"
@@ -78,6 +105,11 @@ function AppRouter(){
                             element={<Perfil />}
 
                         />
+
+
+
+
+
 
 
 
@@ -91,6 +123,11 @@ function AppRouter(){
 
 
 
+
+
+
+
+
                         <Route
 
                             path="/progreso"
@@ -98,10 +135,28 @@ function AppRouter(){
                             element={<Progreso />}
 
                         />
+
+
+
+
+
+
+
+
                         <Route
+
                             path="/usuarios"
-                             element={<Usuarios />}
+
+                            element={<Usuarios />}
+
                         />
+
+
+
+
+
+
+
 
                         <Route
 
@@ -113,7 +168,27 @@ function AppRouter(){
 
 
 
+
+
+
+
+
+                        <Route
+
+                            path="/maquinas"
+
+                            element={<Maquinas />}
+
+                        />
+
+
+
+
+
+
                     </Route>
+
+
 
 
 
@@ -121,15 +196,24 @@ function AppRouter(){
 
 
 
+
+
+
             </Routes>
 
 
+
+
+
         </BrowserRouter>
+
 
     );
 
 
 }
+
+
 
 
 export default AppRouter;
