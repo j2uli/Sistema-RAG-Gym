@@ -2,13 +2,13 @@ import api from "./api";
 
 
 
-// Obtener todos los usuarios
+// Obtener usuarios (ADMIN)
 
 export const obtenerUsuarios = async()=>{
 
 
     const respuesta = await api.get(
-        "/usuarios"
+        "/admin/usuarios"
     );
 
 
@@ -20,7 +20,8 @@ export const obtenerUsuarios = async()=>{
 
 
 
-// Obtener usuario por ID
+
+// Obtener usuario por ID (ADMIN)
 
 export const obtenerUsuario = async(
     id:string
@@ -28,7 +29,9 @@ export const obtenerUsuario = async(
 
 
     const respuesta = await api.get(
-        `/usuarios/${id}`
+
+        `/admin/usuarios/${id}`
+
     );
 
 
@@ -40,7 +43,10 @@ export const obtenerUsuario = async(
 
 
 
-// Crear usuario
+
+
+
+// Crear usuario (ADMIN)
 
 export const crearUsuario = async(
     usuario:any
@@ -49,7 +55,7 @@ export const crearUsuario = async(
 
     const respuesta = await api.post(
 
-        "/usuarios",
+        "/admin/usuarios",
 
         usuario
 
@@ -65,9 +71,11 @@ export const crearUsuario = async(
 
 
 
-// Actualizar usuario
 
-export const actualizarUsuario = async(
+
+// Editar usuario (ADMIN)
+
+export const editarUsuario = async(
 
     id:string,
 
@@ -78,7 +86,7 @@ export const actualizarUsuario = async(
 
     const respuesta = await api.put(
 
-        `/usuarios/${id}`,
+        `/admin/usuarios/${id}`,
 
         usuario
 
@@ -94,7 +102,9 @@ export const actualizarUsuario = async(
 
 
 
-// Eliminar usuario
+
+
+// Eliminar usuario (ADMIN)
 
 export const eliminarUsuario = async(
 
@@ -105,7 +115,7 @@ export const eliminarUsuario = async(
 
     const respuesta = await api.delete(
 
-        `/usuarios/${id}`
+        `/admin/usuarios/${id}`
 
     );
 
@@ -119,7 +129,9 @@ export const eliminarUsuario = async(
 
 
 
-// Actualizar membresía
+
+
+// Actualizar membresía (ADMIN)
 
 export const actualizarMembresia = async(
 
@@ -132,7 +144,7 @@ export const actualizarMembresia = async(
 
     const respuesta = await api.put(
 
-        `/usuarios/${id}/membresia`,
+        `/admin/usuarios/${id}/membresia`,
 
         membresia
 

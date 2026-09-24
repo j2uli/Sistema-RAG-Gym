@@ -80,9 +80,7 @@ router.get("/usuario/:usuarioId", verificarToken, async(req,res)=>{
 
         if(!rutina){
 
-            return res.status(404).json({
-                mensaje:"Rutina no encontrada"
-            });
+            return res.json([]);
 
         }
 

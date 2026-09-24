@@ -1,5 +1,10 @@
 import {
-    useState
+    useState,
+    useEffect
+} from "react";
+
+import type {
+    CSSProperties
 } from "react";
 
 
@@ -21,6 +26,9 @@ import {
 import logo from "../assets/logo.png";
 
 
+import Toast from "../components/ui/Toast";
+
+
 
 function Login(){
 
@@ -34,11 +42,50 @@ function Login(){
 
 
 
-    const [correo,setCorreo]=useState("");
+    const [correo,setCorreo] = useState("");
 
-    const [password,setPassword]=useState("");
+    const [password,setPassword] = useState("");
 
-    const [error,setError]=useState("");
+
+    const [mostrarPassword,setMostrarPassword] = useState(false);
+
+
+    const [mensaje,setMensaje] = useState("");
+
+    const [tipoMensaje,setTipoMensaje] =
+    useState<"error" | "success">("error");
+
+
+
+
+
+
+    useEffect(()=>{
+
+
+        if(mensaje){
+
+
+            const timer = setTimeout(()=>{
+
+                setMensaje("");
+
+            },7000);
+
+
+
+            return ()=>clearTimeout(timer);
+
+
+        }
+
+
+    },[mensaje]);
+
+
+
+
+
 
 
 
@@ -51,11 +98,11 @@ function Login(){
         e.preventDefault();
 
 
+
         try{
 
 
-            const respuesta =
-            await login({
+            const respuesta = await login({
 
                 correo,
 
@@ -74,18 +121,49 @@ function Login(){
             );
 
 
+
             navigate("/dashboard");
 
 
+        }catch(error:any){
 
-        }catch(error){
 
 
-            setError(
-                "Correo o contraseña incorrectos"
-            );
+            setTipoMensaje("error");
+
+
+
+            if(error.response?.status === 403){
+
+
+                setMensaje(
+                    "Solo los administradores pueden ingresar"
+                );
+
+
+            }
+            else if(error.response?.status === 401){
+
+
+                setMensaje(
+                    "Correo o contraseña incorrectos"
+                );
+
+
+            }
+            else{
+
+
+                setMensaje(
+                    "Error al iniciar sesión"
+                );
+
+
+            }
+
 
         }
+
 
 
     };
@@ -94,48 +172,34 @@ function Login(){
 
 
 
+
+
+
+
     return(
 
 
-        <div
-        style={{
-
-            minHeight:"100vh",
-
-            display:"flex",
-
-            justifyContent:"center",
-
-            alignItems:"center",
-
-            background:"#050505"
-
-        }}
-        >
+        <div style={containerStyle}>
 
 
+            {
+                mensaje &&
 
-            <div
+                <Toast
 
-            style={{
+                mensaje={mensaje}
 
-                width:"380px",
+                tipo={tipoMensaje}
 
-                background:"#111",
+                />
 
-                padding:"40px",
+            }
 
-                borderRadius:"20px",
 
-                boxShadow:
-                "0 0 25px #39ff14",
 
-                textAlign:"center"
 
-            }}
 
-            >
-
+            <div style={cardStyle}>
 
 
                 <img
@@ -144,30 +208,14 @@ function Login(){
 
                 alt="Mitico Fitness"
 
-                style={{
-
-                    width:"180px",
-
-                    marginBottom:"20px"
-
-                }}
+                style={logoStyle}
 
                 />
 
 
 
 
-                <h1
-
-                style={{
-
-                    color:"#39ff14",
-
-                    marginBottom:"10px"
-
-                }}
-
-                >
+                <h1 style={titleStyle}>
 
                     Bienvenido
 
@@ -175,20 +223,9 @@ function Login(){
 
 
 
+                <p style={subtitleStyle}>
 
-                <p
-
-                style={{
-
-                    color:"#aaa",
-
-                    marginBottom:"30px"
-
-                }}
-
-                >
-
-                    Ingresa a tu entrenamiento
+                    Ingresa al panel administrativo
 
                 </p>
 
@@ -196,9 +233,7 @@ function Login(){
 
 
 
-                <form
-                onSubmit={handleLogin}
-                >
+                <form onSubmit={handleLogin}>
 
 
 
@@ -211,30 +246,10 @@ function Login(){
                     value={correo}
 
                     onChange={
-                        e=>setCorreo(
-                            e.target.value
-                        )
+                        e=>setCorreo(e.target.value)
                     }
 
-
-                    style={{
-
-                        width:"100%",
-
-                        padding:"14px",
-
-                        marginBottom:"15px",
-
-                        background:"#050505",
-
-                        border:
-                        "1px solid #333",
-
-                        color:"white",
-
-                        borderRadius:"10px"
-
-                    }}
+                    style={inputStyle}
 
                     />
 
@@ -242,41 +257,91 @@ function Login(){
 
 
 
-                    <input
 
-                    type="password"
-
-                    placeholder="Contraseña"
-
-                    value={password}
-
-                    onChange={
-                        e=>setPassword(
-                            e.target.value
-                        )
-                    }
+                    <div style={passwordContainer}>
 
 
-                    style={{
+                        <input
 
-                        width:"100%",
+                        type={
+                            mostrarPassword
+                            ?
+                            "text"
+                            :
+                            "password"
+                        }
 
-                        padding:"14px",
 
-                        marginBottom:"20px",
+                        placeholder="Contraseña"
 
-                        background:"#050505",
 
-                        border:
-                        "1px solid #333",
+                        value={password}
 
-                        color:"white",
 
-                        borderRadius:"10px"
+                        onChange={
+                            e=>setPassword(e.target.value)
+                        }
 
-                    }}
 
-                    />
+                        style={passwordInputStyle}
+
+
+                        />
+
+
+<button
+
+type="button"
+
+onClick={()=>setMostrarPassword(!mostrarPassword)}
+
+style={eyeStyle}
+
+>
+
+
+<svg
+
+width="24"
+
+height="24"
+
+viewBox="0 0 24 24"
+
+fill="none"
+
+stroke="#39ff14"
+
+strokeWidth="2"
+
+strokeLinecap="round"
+
+strokeLinejoin="round"
+
+>
+
+
+<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12"/>
+
+
+<circle
+
+cx="12"
+
+cy="12"
+
+r="3"
+
+/>
+
+
+</svg>
+
+
+
+</button>
+                    </div>
+
 
 
 
@@ -287,30 +352,11 @@ function Login(){
 
                     type="submit"
 
-
-                    style={{
-
-                        width:"100%",
-
-                        padding:"14px",
-
-                        background:"#39ff14",
-
-                        color:"black",
-
-                        fontWeight:"bold",
-
-                        border:"none",
-
-                        borderRadius:"10px",
-
-                        cursor:"pointer"
-
-                    }}
+                    style={buttonStyle}
 
                     >
 
-                        INICIAR SESIÓN
+                    INICIAR SESIÓN
 
                     </button>
 
@@ -323,48 +369,13 @@ function Login(){
 
 
 
-                {
 
-                    error &&
-
-                    <p
-
-                    style={{
-
-                        color:"red",
-
-                        marginTop:"20px"
-
-                    }}
-
-                    >
-
-                        {error}
-
-                    </p>
-
-                }
-
-
-
-
-
-                <p
-
-                style={{
-
-                    marginTop:"30px",
-
-                    color:"#777",
-
-                    fontSize:"13px"
-
-                }}
-
-                >
+                <p style={footerStyle}>
 
                     Mítico Fitness
+
                     <br/>
+
                     Entrena. Supérate. Evoluciona.
 
                 </p>
@@ -381,6 +392,221 @@ function Login(){
     );
 
 }
+
+
+
+
+
+const containerStyle:CSSProperties={
+
+
+    minHeight:"100vh",
+
+    display:"flex",
+
+    justifyContent:"center",
+
+    alignItems:"center",
+
+    background:"#050505"
+
+
+};
+
+
+
+
+const cardStyle:CSSProperties={
+
+
+    width:"380px",
+
+    background:"#111",
+
+    padding:"40px",
+
+    borderRadius:"20px",
+
+    boxShadow:"0 0 25px #39ff14",
+
+    textAlign:"center"
+
+
+};
+
+
+
+
+const logoStyle:CSSProperties={
+
+
+    width:"180px",
+
+    marginBottom:"20px"
+
+
+};
+
+
+
+
+const titleStyle:CSSProperties={
+
+
+    color:"#39ff14",
+
+    marginBottom:"10px"
+
+
+};
+
+
+
+
+const subtitleStyle:CSSProperties={
+
+
+    color:"#aaa",
+
+    marginBottom:"30px"
+
+
+};
+
+
+
+
+const inputStyle:CSSProperties={
+
+
+    width:"100%",
+
+
+    padding:"14px",
+
+
+    marginBottom:"15px",
+
+
+    background:"#050505",
+
+
+    border:"1px solid #333",
+
+
+    color:"white",
+
+
+    borderRadius:"10px",
+
+
+    boxSizing:"border-box"
+
+
+};
+
+
+
+
+const passwordContainer:CSSProperties={
+
+    position:"relative",
+
+    display:"flex",
+
+    alignItems:"center"
+
+};
+
+
+
+const passwordInputStyle:CSSProperties={
+
+
+    ...inputStyle,
+
+    paddingRight:"55px"
+
+
+};
+
+const eyeStyle:CSSProperties={
+
+
+    position:"absolute",
+
+    right:"15px",
+
+    top:"50%",
+
+    transform:"translateY(-65%)",
+
+    cursor:"pointer",
+
+    background:"transparent",
+
+    border:"none",
+
+    width:"35px",
+
+    height:"35px",
+
+    padding:0,
+
+    display:"flex",
+
+    alignItems:"center",
+
+    justifyContent:"center"
+
+
+};
+
+const buttonStyle:CSSProperties={
+
+
+    width:"100%",
+
+
+    padding:"14px",
+
+
+    background:"#39ff14",
+
+
+    color:"black",
+
+
+    fontWeight:"bold",
+
+
+    border:"none",
+
+
+    borderRadius:"10px",
+
+
+    cursor:"pointer"
+
+
+};
+
+
+
+
+const footerStyle:CSSProperties={
+
+
+    marginTop:"30px",
+
+
+    color:"#777",
+
+
+    fontSize:"13px"
+
+
+};
 
 
 

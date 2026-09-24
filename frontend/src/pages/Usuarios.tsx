@@ -14,11 +14,10 @@ import type {
 import {
     obtenerUsuarios,
     crearUsuario,
-    actualizarUsuario,
+    editarUsuario,
     eliminarUsuario,
     actualizarMembresia
 } from "../services/usuarioService";
-
 
 import UserTable from "../components/users/UserTable";
 
@@ -325,14 +324,10 @@ function Usuarios(){
         if(usuarioEditar){
 
 
-            await actualizarUsuario(
-
-                usuarioEditar._id,
-
-                usuario
-
+           await editarUsuario(
+            usuarioEditar._id,
+            usuario
             );
-
 
         }else{
 

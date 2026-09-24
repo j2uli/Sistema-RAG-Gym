@@ -301,43 +301,45 @@ o.usuario?._id?.toString() === id?.toString()
 
 
 
-                    const rutinaUsuario =
-                    await obtenerRutina(id);
+                   try {
+
+    const rutinaUsuario =
+    await obtenerRutina(id);
+
+
+    setRutina(rutinaUsuario);
 
 
 
-                    setRutina(
-                        rutinaUsuario
-                    );
+ if(rutinaUsuario && rutinaUsuario._id){
+
+    const detalles =
+    await obtenerDetalleRutina(
+        rutinaUsuario._id
+    );
+
+    setDetallesRutina(detalles);
+
+}else{
+
+    setDetallesRutina([]);
+
+}
+
+}catch(error){
 
 
+    console.log(
+        "Usuario sin rutina asignada"
+    );
 
 
+    setRutina(null);
 
-                    if(rutinaUsuario){
-
-
-                        const detalles =
-
-                        await obtenerDetalleRutina(
-
-                            rutinaUsuario._id
-
-                        );
+    setDetallesRutina([]);
 
 
-                        setDetallesRutina(
-
-                            detalles
-
-                        );
-
-
-                    }
-
-
-
-
+}
 
 
 

@@ -149,6 +149,17 @@ const loginUsuario = async (req,res)=>{
 
         }
 
+        // Verificar que sea administrador
+
+if(usuario.rol !== "admin"){
+
+    return res.status(403).json({
+
+        mensaje:"Acceso restringido. Solo administradores pueden ingresar."
+
+    });
+
+}
 
 
         // Crear token
